@@ -34,6 +34,11 @@ export const ShortUrlController = async (req, res) => {
       const urlObject = new URL(url); // Attempt to parse the URL
       const hostname = urlObject.hostname;
 
+      const httpRegex = /^(http|https)(:\/\/)/;
+      if (!httpRegex.test(url)) {
+        return res.json({ error: "invalid url" });
+      }
+
       // Perform DNS lookup to ensure the hostname is valid and resolvable
       await lookupPromise(hostname);
     } catch (error) {
